@@ -121,9 +121,13 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
             'type_id' => 'nullable|exists:types,id',
             'teches' => 'nullable|exists:teches,id',
+            'is_published' => 'boolean',
         ]);
 
         $data = $request->all();
+        $data["is_published"] = $request->has("is_published") ? 1 : 0;
+
+        // dd($data);
 
         if(Arr::exists($data, 'image')) {
             $path = Storage::put('upload/projects', $data['image']);
