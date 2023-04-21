@@ -18,7 +18,8 @@ class ProjectController extends Controller
         $projects = Project::where('is_published', true)
         ->with('type', 'teches')
         ->orderBy('updated_at', 'DESC')
-        ->get();
+        ->paginate(6);
+        
         return response()->json($projects);
     }
  
