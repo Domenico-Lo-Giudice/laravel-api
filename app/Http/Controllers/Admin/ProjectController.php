@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+use App\Mail\PublishedProjectMail;
+
 use App\Models\Project;
 use App\Models\Type;
 use App\Models\Tech;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -73,6 +77,10 @@ class ProjectController extends Controller
 
         
         if(Arr::exists($data, 'teches')) $project->teches()->attach($data['teches']);
+
+        $mail = new PublishedProjectMail();
+        $user_mail = Auth::user()->email;
+        Mail::to($user_mail)->send($mail);
 
         return to_route('admin.projects.show', $project);
 
