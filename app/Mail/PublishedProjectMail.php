@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Project;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,14 +15,16 @@ class PublishedProjectMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $project;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Project $project)
     {
-        //
+        $this->project = $project;
     }
 
     /**
@@ -44,6 +48,9 @@ class PublishedProjectMail extends Mailable
     {
         return new Content(
             view: 'mails.projects.published',
+            with: [
+                'title' => $this->project->title
+            ]
         );
     }
 

@@ -78,7 +78,7 @@ class ProjectController extends Controller
         
         if(Arr::exists($data, 'teches')) $project->teches()->attach($data['teches']);
 
-        $mail = new PublishedProjectMail();
+        $mail = new PublishedProjectMail($project);
         $user_mail = Auth::user()->email;
         Mail::to($user_mail)->send($mail);
 
@@ -149,6 +149,12 @@ class ProjectController extends Controller
         $project->save();
 
         $project->update($data);
+
+        $mail = new PublishedProjectMail($project);
+        $user_mail = Auth::user()->email;
+        Mail::to($user_mail)->send($mail);
+
+
         if(Arr::exists($data, 'teches')) 
              $project->teches()->sync($data['teches']);
         else 
