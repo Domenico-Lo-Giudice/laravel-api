@@ -1,4 +1,22 @@
-<!DOCTYPE html>
+<x-mail::message>
+# {{ $published_text }}
+## {{ $project->title }}
+
+<p>
+    {{ $project->getAbstract(100) }}
+</p>
+ 
+@if ($project->is_published)
+ <x-mail::button :url="env('APP_FRONTEND_URL') . '/projects/' . $project->slug">
+    View Project
+ </x-mail::button>
+ @endif
+ 
+Thanks,<br>
+{{ config('app.name') }}
+</x-mail::message>
+
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,4 +36,5 @@
     <p>{{ $project->getAbstract(100)}}</p>
 
 </body>
-</html>
+</html> --}}
+

@@ -51,7 +51,7 @@ class PublishedProjectMail extends Mailable
         $published_text = $project->is_published ? 'Il project è stato pubblicato' : 'Il project è stato ritirato';
 
         return new Content(
-            view: 'mails.projects.published',
+            markdown: 'mails.projects.published',
             with: compact('project', 'published_text')
         );
     }
