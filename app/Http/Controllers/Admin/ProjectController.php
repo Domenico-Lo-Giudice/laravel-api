@@ -158,8 +158,8 @@ class ProjectController extends Controller
         if ($initial_status !=  $project->is_published) {
 
             $mail = new PublishedProjectMail($project);
-            $user_mail = Auth::user()->email;
-            Mail::to($user_mail)->send($mail);
+            $user_email = Auth::user()->email;
+            Mail::to($user_email)->send($mail);
         }
 
         
