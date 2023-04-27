@@ -78,9 +78,12 @@ class ProjectController extends Controller
         
         if(Arr::exists($data, 'teches')) $project->teches()->attach($data['teches']);
 
-        $mail = new PublishedProjectMail($project);
-        $user_mail = Auth::user()->email;
-        Mail::to($user_mail)->send($mail);
+        
+        if($project->is_published) {
+            $mail = new PublishedProjectMail($project);
+            $user_mail = Auth::user()->email;
+            Mail::to($user_mail)->send($mail);
+        }
 
         return to_route('admin.projects.show', $project);
 
@@ -132,6 +135,8 @@ class ProjectController extends Controller
             'is_published' => 'boolean',
         ]);
 
+        $initial_status = $project->is_published;
+
         $data = $request->all();
         $data["is_published"] = $request->has("is_published") ? 1 : 0;
 
@@ -150,9 +155,13 @@ class ProjectController extends Controller
 
         $project->update($data);
 
-        $mail = new PublishedProjectMail($project);
-        $user_mail = Auth::user()->email;
-        Mail::to($user_mail)->send($mail);
+        if ($initial_status !=  $project->is_published) {
+
+            $mail = new PublishedProjectMail($project);
+            $user_mail = Auth::user()->email;
+            Mail::to($user_mail)->send($mail);
+        }
+
 
 
         if(Arr::exists($data, 'teches')) 
